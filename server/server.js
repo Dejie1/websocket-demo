@@ -44,7 +44,7 @@ io.on('connection', (socket) => {
     const click = {
       x: data.x,
       y: data.y,
-      color: gameState.players[socket.id].color,
+      color: data.color || gameState.players[socket.id].color,
       id: Date.now()
     };
     
@@ -57,6 +57,15 @@ io.on('connection', (socket) => {
     
     // Broadcast to all players
     io.emit('newClick', click);
+  });
+
+  // Handle clear canvas
+  socket.on('clearCanvas', () => {
+    console.log('Clearing canvas requested by:', socket.id);
+    gameState.clicks = [];
+    
+    // Broadcast clear event to all players
+    io.emit('canvasCleared');
   });
 
   // Handle player disconnect

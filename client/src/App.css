@@ -40,3 +40,78 @@ canvas {
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.3);
 }
+
+.color-palette-container {
+  margin: 20px 0;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+}
+
+.color-palette-container h3 {
+  margin-bottom: 15px;
+  color: #fff;
+  font-size: 20px;
+}
+
+.color-palette {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+.color-button {
+  width: 50px;
+  height: 50px;
+  border: 3px solid transparent;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.color-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+}
+
+.color-button.selected {
+  border-color: #fff;
+  box-shadow: 0 0 15px rgba(255,255,255,0.8);
+  transform: scale(1.15);
+}
+
+.selected-color-text {
+  font-size: 16px;
+  margin: 10px 0;
+  color: #fff;
+}
+
+.clear-button {
+  background-color: #ff4444;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 15px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.clear-button:hover:not(:disabled) {
+  background-color: #cc3333;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+}
+
+.clear-button:disabled {
+  background-color: #666;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
