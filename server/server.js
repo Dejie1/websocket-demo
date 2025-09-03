@@ -45,18 +45,39 @@ io.on('connection', (socket) => {
       x: data.x,
       y: data.y,
       color: data.color || gameState.players[socket.id].color,
+      type: data.type || 'dot',
       id: Date.now()
     };
     
     gameState.clicks.push(click);
     
-    // Keep only last 100 clicks for performance
+    // Keep only last 100 items for performance
     if (gameState.clicks.length > 100) {
       gameState.clicks = gameState.clicks.slice(-100);
     }
     
     // Broadcast to all players
     io.emit('newClick', click);
+  });
+
+  // Handle player drawing
+  socket.on('playerDraw', (data) => {
+    const line = {
+      path: data.path,
+      color: data.color || gameState.players[socket.id].color,
+      type: data.type || 'line',
+      id: Date.now()
+    };
+    
+    gameState.clicks.push(line);
+    
+    // Keep only last 100 items for performance
+    if (gameState.clicks.length > 100) {
+      gameState.clicks = gameState.clicks.slice(-100);
+    }
+    
+    // Broadcast to all players
+    io.emit('newLine', line);
   });
 
   // Handle clear canvas

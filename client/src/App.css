@@ -145,6 +145,7 @@ canvas {
   background-color: white;
   max-width: 100%;
   height: auto;
+  cursor: crosshair;
 }
 
 .canvas-instructions {
