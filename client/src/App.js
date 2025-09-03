@@ -67,7 +67,7 @@ function WebSocketDemo() {
     clicks.forEach(click => {
       ctx.fillStyle = click.color;
       ctx.beginPath();
-      ctx.arc(click.x, click.y, 10, 0, 2 * Math.PI);
+      ctx.arc(click.x, click.y, 6, 0, 2 * Math.PI);
       ctx.fill();
     });
   }, [clicks]);
@@ -364,7 +364,7 @@ function ApiDemo() {
     clicks.forEach(click => {
       ctx.fillStyle = click.color;
       ctx.beginPath();
-      ctx.arc(click.x, click.y, 10, 0, 2 * Math.PI);
+      ctx.arc(click.x, click.y, 6, 0, 2 * Math.PI);
       ctx.fill();
     });
   }, [clicks]);
