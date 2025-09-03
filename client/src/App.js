@@ -165,7 +165,7 @@ function WebSocketDemo() {
         <p className="selected-color-text">Selected: <span style={{color: selectedColor, fontWeight: 'bold', textShadow: '0 0 5px rgba(0,0,0,0.5)'}}>{selectedColor}</span></p>
       </div>
       <div className="game-container">
-        <canvas ref={canvasRef} width={800} height={600} onMouseDown={handleMouseDown} onMouseMove={handleMouseMove} onMouseUp={handleMouseUp} onMouseLeave={handleMouseUp} onClick={handleCanvasClick} />
+        <canvas ref={canvasRef} width={1024} height={728} onMouseDown={handleMouseDown} onMouseMove={handleMouseMove} onMouseUp={handleMouseUp} onMouseLeave={handleMouseUp} onClick={handleCanvasClick} />
         <div className="canvas-instructions">
           <p>✨ Hold and drag to draw lines, or click to add dots!</p>
           <p>🎨 Pick your favorite color from the palette above</p>
@@ -370,7 +370,7 @@ function ApiDemo() {
         <p className="selected-color-text">Selected: <span style={{color: selectedColor, fontWeight: 'bold', textShadow: '0 0 5px rgba(0,0,0,0.5)'}}>{selectedColor}</span></p>
       </div>
       <div className="game-container">
-        <canvas ref={canvasRef} width={800} height={600} onMouseDown={handleMouseDown} onMouseMove={handleMouseMove} onMouseUp={handleMouseUp} onMouseLeave={handleMouseUp} onClick={handleCanvasClick} />
+        <canvas ref={canvasRef} width={1024} height={728} onMouseDown={handleMouseDown} onMouseMove={handleMouseMove} onMouseUp={handleMouseUp} onMouseLeave={handleMouseUp} onClick={handleCanvasClick} />
         <div className="canvas-instructions">
           <p>✨ Hold and drag to draw lines, or click to add dots!</p>
           <p>⚠️ Notice the delay? This uses API calls with polling for updates.</p>
