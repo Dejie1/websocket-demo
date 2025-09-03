@@ -169,6 +169,7 @@ function WebSocketDemo() {
                   color={color} 
                   onChange={handleColorPickerChange} 
                   hideInput={["rgb", "hsv"]}
+                  hideAlpha={true}
                 />
               </div>
             </div>
@@ -434,6 +435,7 @@ function ApiDemo() {
                   color={color} 
                   onChange={handleColorPickerChange} 
                   hideInput={["rgb", "hsv"]}
+                  hideAlpha={true}
                 />
               </div>
             </div>

@@ -21,16 +21,23 @@
   padding: 0;
 }
 
+html, body {
+  height: 100%;
+  overflow-x: hidden;
+  overscroll-behavior: none;
+  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--accent-primary) 100%);
+}
+
 .App {
   text-align: center;
   font-family: var(--font-family);
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--accent-primary) 100%);
 }
 
 .App-header {
-  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--accent-primary) 100%);
   padding: 30px 20px;
   color: var(--text-primary);
-  min-height: 100vh;
 }
 
 h1 {
