@@ -51,9 +51,9 @@ io.on('connection', (socket) => {
     
     gameState.clicks.push(click);
     
-    // Keep only last 100 items for performance
-    if (gameState.clicks.length > 100) {
-      gameState.clicks = gameState.clicks.slice(-100);
+    // Keep only last 10000 items for performance (increased for 32GB RAM server)
+    if (gameState.clicks.length > 10000) {
+      gameState.clicks = gameState.clicks.slice(-10000);
     }
     
     // Broadcast to all players
@@ -71,9 +71,9 @@ io.on('connection', (socket) => {
     
     gameState.clicks.push(line);
     
-    // Keep only last 100 items for performance
-    if (gameState.clicks.length > 100) {
-      gameState.clicks = gameState.clicks.slice(-100);
+    // Keep only last 10000 items for performance (increased for 32GB RAM server)
+    if (gameState.clicks.length > 10000) {
+      gameState.clicks = gameState.clicks.slice(-10000);
     }
     
     // Broadcast to all players
