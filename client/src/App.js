@@ -474,9 +474,10 @@ function ApiDemo() {
       <div className="api-info">
         <h4>⚡ Performance Comparison:</h4>
         <p><strong>API Demo:</strong> Uses REST API calls + polling every 1 second for updates</p>
+        <br></br>
         <p><strong>WebSocket Demo:</strong> Real-time bidirectional communication</p>
         <p>Switch between tabs to see the dramatic difference in responsiveness!</p>
-        
+        <br></br>
         <h4>🔧 Technical Details:</h4>
         <ul>
           <li>Each click makes an HTTP POST request to Supabase</li>
