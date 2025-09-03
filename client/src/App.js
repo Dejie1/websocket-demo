@@ -2,6 +2,9 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import io from 'socket.io-client';
 import './App.css';
 import { supabase } from './supabaseClient';
+import { extendedPalette } from './colorPalettes';
+import { ColorPicker, useColor } from "react-color-palette";
+import "react-color-palette/css";
 
 const SERVER_URL = process.env.NODE_ENV === 'production' 
   ? 'http://62.72.27.216:3001' 
@@ -14,9 +17,11 @@ function WebSocketDemo() {
   const [clicks, setClicks] = useState([]);
   const [connected, setConnected] = useState(false);
   const [selectedColor, setSelectedColor] = useState('#FF6B6B');
+  const [color, setColor] = useColor('#FF6B6B');
+  const [showColorPicker, setShowColorPicker] = useState(false);
   const canvasRef = useRef(null);
 
-  const colorPalette = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD', '#FF8A80', '#81C784', '#64B5F6', '#FFB74D', '#F06292', '#A1887F'];
+  const colorPalette = extendedPalette;
 
   useEffect(() => {
     // Initialize socket connection
@@ -78,9 +83,26 @@ function WebSocketDemo() {
     socket.emit('playerClick', { x, y, color: selectedColor });
   };
 
-  const handleColorSelect = (color) => {
-    setSelectedColor(color);
+  const handleColorSelect = (colorValue) => {
+    setSelectedColor(colorValue);
+    setColor({ hex: colorValue, hsv: { h: 0, s: 0, v: 0 }, rgb: { r: 0, g: 0, b: 0 } });
   };
+
+  const handleColorPickerChange = (newColor) => {
+    setColor(newColor);
+    setSelectedColor(newColor.hex);
+  };
+
+  // Handle ESC key to close color picker
+  useEffect(() => {
+    const handleEsc = (event) => {
+      if (event.keyCode === 27 && showColorPicker) {
+        setShowColorPicker(false);
+      }
+    };
+    document.addEventListener('keydown', handleEsc);
+    return () => document.removeEventListener('keydown', handleEsc);
+  }, [showColorPicker]);
 
   const handleClearCanvas = () => {
     if (!socket || !connected) return;
@@ -107,31 +129,76 @@ function WebSocketDemo() {
               style={{ backgroundColor: color }}
               onClick={() => handleColorSelect(color)}
               title={color}
+              aria-label={`Select color ${color}`}
+              aria-pressed={selectedColor === color}
             />
           ))}
         </div>
+        
+        <div className="custom-color-section">
+          <h4>Or pick any color:</h4>
+          <button 
+            className="color-picker-toggle"
+            onClick={() => setShowColorPicker(!showColorPicker)}
+            style={{ backgroundColor: selectedColor }}
+            aria-expanded={showColorPicker}
+            aria-controls="color-picker-container"
+          >
+            {showColorPicker ? 'Hide Color Picker' : 'Show Color Picker'}
+          </button>
+          
+          {showColorPicker && (
+            <div 
+              className="color-picker-container" 
+              id="color-picker-container"
+              onClick={(e) => {
+                if (e.target === e.currentTarget) {
+                  setShowColorPicker(false);
+                }
+              }}
+            >
+              <div className="color-picker-modal">
+                <button 
+                  className="color-picker-close"
+                  onClick={() => setShowColorPicker(false)}
+                  aria-label="Close color picker"
+                >
+                  ×
+                </button>
+                <ColorPicker 
+                  color={color} 
+                  onChange={handleColorPickerChange} 
+                  hideInput={["rgb", "hsv"]}
+                />
+              </div>
+            </div>
+          )}
+        </div>
+        
         <p className="selected-color-text">Selected: <span style={{color: selectedColor, fontWeight: 'bold'}}>{selectedColor}</span></p>
       </div>
 
       <div className="game-container">
-        <canvas
-          ref={canvasRef}
-          width={800}
-          height={600}
-          onClick={handleCanvasClick}
-          style={{
-            border: '2px solid #333',
-            cursor: 'crosshair',
-            backgroundColor: 'white'
-          }}
-        />
-        <p>Click anywhere on the canvas to add colored dots!</p>
-        <p>Pick your favorite color from the palette above 🎨</p>
+        <div className="canvas-wrapper">
+          <canvas
+            ref={canvasRef}
+            width={800}
+            height={600}
+            onClick={handleCanvasClick}
+            aria-label="Interactive drawing canvas. Click to add colored dots."
+            role="img"
+          />
+        </div>
+        <div className="canvas-instructions">
+          <p>✨ Click anywhere on the canvas to add colored dots!</p>
+          <p>🎨 Pick your favorite color from the palette above</p>
+        </div>
         
         <button 
           className="clear-button"
           onClick={handleClearCanvas}
           disabled={!connected}
+          aria-label="Clear all drawings from canvas"
         >
           🗑️ Clear Canvas
         </button>
@@ -144,6 +211,8 @@ function WebSocketDemo() {
 function ApiDemo() {
   const [clicks, setClicks] = useState([]);
   const [selectedColor, setSelectedColor] = useState('#FF6B6B');
+  const [color, setColor] = useColor('#FF6B6B');
+  const [showColorPicker, setShowColorPicker] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [lastUpdate, setLastUpdate] = useState(null);
@@ -151,7 +220,7 @@ function ApiDemo() {
   const canvasRef = useRef(null);
   const pollInterval = useRef(null);
 
-  const colorPalette = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD', '#FF8A80', '#81C784', '#64B5F6', '#FFB74D', '#F06292', '#A1887F'];
+  const colorPalette = extendedPalette;
 
   const fetchClicks = useCallback(async () => {
     try {
@@ -249,9 +318,26 @@ function ApiDemo() {
     addClick(x, y, selectedColor);
   };
 
-  const handleColorSelect = (color) => {
-    setSelectedColor(color);
+  const handleColorSelect = (colorValue) => {
+    setSelectedColor(colorValue);
+    setColor({ hex: colorValue, hsv: { h: 0, s: 0, v: 0 }, rgb: { r: 0, g: 0, b: 0 } });
   };
+
+  const handleColorPickerChange = (newColor) => {
+    setColor(newColor);
+    setSelectedColor(newColor.hex);
+  };
+
+  // Handle ESC key to close color picker
+  useEffect(() => {
+    const handleEsc = (event) => {
+      if (event.keyCode === 27 && showColorPicker) {
+        setShowColorPicker(false);
+      }
+    };
+    document.addEventListener('keydown', handleEsc);
+    return () => document.removeEventListener('keydown', handleEsc);
+  }, [showColorPicker]);
 
   useEffect(() => {
     // Initial load
@@ -308,26 +394,71 @@ function ApiDemo() {
               style={{ backgroundColor: color }}
               onClick={() => handleColorSelect(color)}
               title={color}
+              aria-label={`Select color ${color}`}
+              aria-pressed={selectedColor === color}
             />
           ))}
         </div>
+        
+        <div className="custom-color-section">
+          <h4>Or pick any color:</h4>
+          <button 
+            className="color-picker-toggle"
+            onClick={() => setShowColorPicker(!showColorPicker)}
+            style={{ backgroundColor: selectedColor }}
+            aria-expanded={showColorPicker}
+            aria-controls="color-picker-container"
+          >
+            {showColorPicker ? 'Hide Color Picker' : 'Show Color Picker'}
+          </button>
+          
+          {showColorPicker && (
+            <div 
+              className="color-picker-container" 
+              id="color-picker-container"
+              onClick={(e) => {
+                if (e.target === e.currentTarget) {
+                  setShowColorPicker(false);
+                }
+              }}
+            >
+              <div className="color-picker-modal">
+                <button 
+                  className="color-picker-close"
+                  onClick={() => setShowColorPicker(false)}
+                  aria-label="Close color picker"
+                >
+                  ×
+                </button>
+                <ColorPicker 
+                  color={color} 
+                  onChange={handleColorPickerChange} 
+                  hideInput={["rgb", "hsv"]}
+                />
+              </div>
+            </div>
+          )}
+        </div>
+        
         <p className="selected-color-text">Selected: <span style={{color: selectedColor, fontWeight: 'bold'}}>{selectedColor}</span></p>
       </div>
 
       <div className="game-container">
-        <canvas
-          ref={canvasRef}
-          width={800}
-          height={600}
-          onClick={handleCanvasClick}
-          style={{
-            border: '2px solid #333',
-            cursor: loading ? 'wait' : 'crosshair',
-            backgroundColor: 'white'
-          }}
-        />
-        <p>Click anywhere on the canvas to add colored dots!</p>
-        <p>⚠️ Notice the delay? This uses API calls with 1-second polling for updates.</p>
+        <div className="canvas-wrapper">
+          <canvas
+            ref={canvasRef}
+            width={800}
+            height={600}
+            onClick={handleCanvasClick}
+            style={{
+              cursor: loading ? 'wait' : 'crosshair'
+            }}
+          />
+        </div>
+        <div className="canvas-instructions">
+          <p>✨ Click anywhere on the canvas to add colored dots!</p>
+          <p>⚠️ Notice the delay? This uses API calls with 1-second polling for updates.</p>
+        </div>
         
         <button 
           className="clear-button"
