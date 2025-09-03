@@ -2,7 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 import './App.css';
 
-const SERVER_URL = process.env.REACT_APP_SERVER_URL || 'http://localhost:3001';
+const SERVER_URL = process.env.NODE_ENV === 'production' 
+  ? 'http://62.72.27.216:3001' 
+  : 'http://localhost:3001';
 
 function App() {
   const [socket, setSocket] = useState(null);
