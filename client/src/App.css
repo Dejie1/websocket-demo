@@ -199,8 +199,16 @@ canvas {
   color: var(--text-secondary);
 }
 
-/* Action Buttons (Clear, Color Picker Toggle) */
-.clear-button, .color-picker-toggle {
+/* Canvas Controls */
+.canvas-controls {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+/* Action Buttons (Clear, Export, Color Picker Toggle) */
+.clear-button, .export-button, .color-picker-toggle {
   background: linear-gradient(90deg, #6c5ce7, #a29bfe);
   color: white;
   border: none;
@@ -212,17 +220,24 @@ canvas {
   transition: all 0.3s ease;
   box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
+
 .clear-button {
   background: linear-gradient(90deg, var(--accent-secondary), #ff7675);
 }
 
+.export-button {
+  background: linear-gradient(90deg, #74b9ff, #0984e3);
+}
+
 .clear-button:hover:not(:disabled),
+.export-button:hover:not(:disabled),
 .color-picker-toggle:hover:not(:disabled) {
   transform: translateY(-3px);
   box-shadow: 0 6px 20px rgba(0,0,0,0.3);
 }
 
 .clear-button:disabled,
+.export-button:disabled,
 .color-picker-toggle:disabled {
   background: #555;
   cursor: not-allowed;
@@ -332,5 +347,16 @@ canvas {
   canvas {
     width: 100%;
     height: auto;
+  }
+
+  .canvas-controls {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .clear-button, .export-button, .color-picker-toggle {
+    width: 100%;
+    max-width: 250px;
   }
 }

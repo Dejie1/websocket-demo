@@ -137,6 +137,16 @@ function WebSocketDemo() {
     if (socket && connected) socket.emit('clearCanvas');
   };
 
+  const exportCanvas = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    
+    const link = document.createElement('a');
+    link.download = `canvas-export-${new Date().getTime()}.png`;
+    link.href = canvas.toDataURL();
+    link.click();
+  };
+
   return (
     <div>
       <h2>🌐 WebSocket Demo - Collaborative Canvas</h2>
@@ -160,7 +170,10 @@ function WebSocketDemo() {
           <p>✨ Hold and drag to draw lines, or click to add dots!</p>
           <p>🎨 Pick your favorite color from the palette above</p>
         </div>
-        <button className="clear-button" onClick={handleClearCanvas} disabled={!connected}>🗑️ Clear Canvas</button>
+        <div className="canvas-controls">
+          <button className="clear-button" onClick={handleClearCanvas} disabled={!connected}>🗑️ Clear Canvas</button>
+          <button className="export-button" onClick={exportCanvas}>📸 Export Image</button>
+        </div>
       </div>
     </div>
   );
@@ -327,6 +340,16 @@ function ApiDemo() {
     return () => document.removeEventListener('keydown', handleEsc);
   }, []);
 
+  const exportCanvas = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    
+    const link = document.createElement('a');
+    link.download = `canvas-export-${new Date().getTime()}.png`;
+    link.href = canvas.toDataURL();
+    link.click();
+  };
+
   return (
     <div>
       <h2>📡 API Demo - Collaborative Canvas (Polling)</h2>
@@ -352,7 +375,10 @@ function ApiDemo() {
           <p>✨ Hold and drag to draw lines, or click to add dots!</p>
           <p>⚠️ Notice the delay? This uses API calls with polling for updates.</p>
         </div>
-        <button className="clear-button" onClick={clearCanvas} disabled={loading}>🗑️ Clear Canvas</button>
+        <div className="canvas-controls">
+          <button className="clear-button" onClick={clearCanvas} disabled={loading}>🗑️ Clear Canvas</button>
+          <button className="export-button" onClick={exportCanvas}>📸 Export Image</button>
+        </div>
       </div>
       <div className="api-info">
         <h4>⚡ Performance Comparison:</h4>
